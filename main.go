@@ -23,7 +23,7 @@ func day19() {
 	reader := bufio.NewReader(f)
 
 	for {
-		lbuf, _, err := reader.ReadLine();
+		lbuf, _, err := reader.ReadLine()
 
 		if err != nil || len(lbuf) == 0 {
 			break

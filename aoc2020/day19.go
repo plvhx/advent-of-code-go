@@ -13,9 +13,9 @@ type Message struct {
 }
 
 type Rules struct {
-	index    uint32
-	subRules []SubRules
-	relation []int32
+	index                uint32
+	subRules             []SubRules
+	relation             []int32
 	normalizedStringRule string
 }
 
@@ -26,7 +26,7 @@ type SubRules struct {
 
 type MessageInterface interface {
 	BuildRuleTable(rline string)
-	GetRules() ([]Rules)
+	GetRules() []Rules
 	GetRuleAt(index int) (Rules, error)
 	TopDownMatchTraversal(t string, rule uint32) bool
 }
@@ -35,8 +35,8 @@ const (
 	OR = iota
 )
 
-func NewMessage() (MessageInterface) {
-	msgCtx := &Message{ rules: make([]Rules, 0) }
+func NewMessage() MessageInterface {
+	msgCtx := &Message{rules: make([]Rules, 0)}
 	return msgCtx
 }
 
@@ -71,36 +71,36 @@ func _isUppercaseString(buf string) bool {
 }
 
 func _isLogicalComparisonOperator(buf string) bool {
-	switch (buf) {
-		case "|":
-			return true
+	switch buf {
+	case "|":
+		return true
 	}
 
 	return false
 }
 
 func _convertLogicalOperatorToAssociatedNumber(buf string) int32 {
-	switch (buf) {
-		case "|":
-			return OR
+	switch buf {
+	case "|":
+		return OR
 	}
 
 	return -1
 }
 
 func _parseRuleLine(rule string, m *Message) {
-	reg      := regexp.MustCompile(`([0-9]+|\||[a-zA-Z]+)`)
-	matches  := reg.FindAllString(rule, -1)
+	reg := regexp.MustCompile(`([0-9]+|\||[a-zA-Z]+)`)
+	matches := reg.FindAllString(rule, -1)
 	index, _ := strconv.Atoi(matches[0])
-	tmp      := []uint32{}
-	stmp     := []string{}
+	tmp := []uint32{}
+	stmp := []string{}
 
 	m.rules = append(
 		m.rules,
 		Rules{
-			index: uint32(index),
-			subRules: make([]SubRules, 0),
-			relation: make([]int32, 0),
+			index:                uint32(index),
+			subRules:             make([]SubRules, 0),
+			relation:             make([]int32, 0),
 			normalizedStringRule: "",
 		},
 	)
@@ -110,7 +110,7 @@ func _parseRuleLine(rule string, m *Message) {
 	for i := 1; i < len(matches); i++ {
 		if _isDigit(matches[i]) {
 			val, _ := strconv.Atoi(matches[i])
-			tmp     = append(tmp, uint32(val))
+			tmp = append(tmp, uint32(val))
 			continue
 		}
 
@@ -120,21 +120,21 @@ func _parseRuleLine(rule string, m *Message) {
 		}
 
 		if _isLogicalComparisonOperator(matches[i]) {
-			m.rules[rLen - 1].relation = append(
-				m.rules[rLen - 1].relation,
+			m.rules[rLen-1].relation = append(
+				m.rules[rLen-1].relation,
 				_convertLogicalOperatorToAssociatedNumber(matches[i]),
 			)
 		}
 
-		m.rules[rLen - 1].subRules = append(m.rules[rLen - 1].subRules, SubRules{ numbersRule: tmp, stringsRule: stmp })
-		m.rules[rLen - 1].normalizedStringRule = strings.Join(stmp, "")
+		m.rules[rLen-1].subRules = append(m.rules[rLen-1].subRules, SubRules{numbersRule: tmp, stringsRule: stmp})
+		m.rules[rLen-1].normalizedStringRule = strings.Join(stmp, "")
 		tmp = []uint32{}
 		stmp = []string{}
 	}
 
 	if len(tmp) != 0 || len(stmp) != 0 {
-		m.rules[rLen - 1].subRules = append(m.rules[rLen - 1].subRules, SubRules{ numbersRule: tmp, stringsRule: stmp })
-		m.rules[rLen - 1].normalizedStringRule = strings.Join(stmp, "")
+		m.rules[rLen-1].subRules = append(m.rules[rLen-1].subRules, SubRules{numbersRule: tmp, stringsRule: stmp})
+		m.rules[rLen-1].normalizedStringRule = strings.Join(stmp, "")
 		tmp = []uint32{}
 		stmp = []string{}
 	}
@@ -144,7 +144,7 @@ func (m *Message) BuildRuleTable(rline string) {
 	_parseRuleLine(rline, m)
 }
 
-func (m *Message) GetRules() ([]Rules) {
+func (m *Message) GetRules() []Rules {
 	return m.rules
 }
 
@@ -207,7 +207,7 @@ func _multiContains(x []uint32, y []uint32) bool {
 func _combine(a string, b string) string {
 	aSplitted := strings.Split(a, "|")
 	bSplitted := strings.Split(b, "|")
-	result    := make([]string, 0)
+	result := make([]string, 0)
 
 	var buffer bytes.Buffer
 
@@ -249,7 +249,7 @@ func _filterRules__part1(m *Message) []uint32 {
 func _filterRules__part2(m *Message) []uint32 {
 	termRules := _findTerminalRules(m)
 	normRules := make([]uint32, 0)
-	isPure    := true
+	isPure := true
 
 	for _, idx := range _filterRules__part1(m) {
 		termRules = append(termRules, idx)
@@ -308,10 +308,10 @@ func _normalizeRules__step1(m *Message) {
 			buffer.WriteString(rule.normalizedStringRule)
 
 			if i > 0 && len(rule.relation) > 0 {
-                                if rule.relation[i - 1] == OR {
-                                        buffer.WriteString("|")
-                                }
-                        }
+				if rule.relation[i-1] == OR {
+					buffer.WriteString("|")
+				}
+			}
 
 			for _, index := range rule.subRules[i].numbersRule {
 				tRule, _ := m.GetRuleAt(int(index))
@@ -338,7 +338,7 @@ func _normalizeRules__step2(m *Message) {
 			buffer.WriteString(rule.normalizedStringRule)
 
 			if i > 0 && len(rule.relation) > 0 {
-				if rule.relation[i - 1] == OR {
+				if rule.relation[i-1] == OR {
 					buffer.WriteString("|")
 				}
 			}
