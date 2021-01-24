@@ -6,5 +6,5 @@ Repository for my advent of code 2020 submissions
 
 ```
 First, compile with command 'go build main.go'.
-Then, at the same directory, run compiled binary with command './build'
+Then, at the same directory, run compiled binary with command './main'
 ```
