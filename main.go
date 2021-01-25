@@ -66,6 +66,7 @@ func day2() {
 	}
 
 	fmt.Printf("[Day 2, Part 1] password matches: %v\n", aoc2020.PasswordPhilosophy(arr))
+	fmt.Printf("[Day 2, Part 2] password matches: %v\n", aoc2020.PasswordPhilosophy_Part2(arr))
 }
 
 func day19() {

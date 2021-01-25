@@ -62,3 +62,27 @@ func PasswordPhilosophy(data []string) uint32 {
 
 	return numMatches
 }
+
+func PasswordPhilosophy_Part2(data []string) uint32 {
+	dl := _buildDictionaryLookup(data)
+
+	var numMatches uint32 = 0
+
+	for _, _dl := range dl {
+		if (len(_dl.target) - 1) < int(_dl.max-1) {
+			continue
+		}
+
+		if _dl.target[_dl.min-1] != _dl.pivot && _dl.target[_dl.max-1] != _dl.pivot {
+			continue
+		}
+
+		if _dl.target[_dl.min-1] == _dl.pivot && _dl.target[_dl.max-1] == _dl.pivot {
+			continue
+		}
+
+		numMatches++
+	}
+
+	return numMatches
+}
