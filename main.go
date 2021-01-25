@@ -9,7 +9,7 @@ import (
 	"advent-of-code-go/aoc2020"
 )
 
-func day1_part1() {
+func day1() {
 	f, err := os.Open("./input/day1.txt")
 
 	if err != nil {
@@ -38,7 +38,8 @@ func day1_part1() {
 		arr = append(arr, uint32(num))
 	}
 
-	fmt.Printf("[Day 1, Part 1] multiplied: %v\n", aoc2020.ReportRepair(arr))
+	fmt.Printf("[Day 1, Part 1] multiplied (2 entries): %v\n", aoc2020.ReportRepair(arr))
+	fmt.Printf("[Day 1, Part 2] multiplied (3 entries): %v\n", aoc2020.ReportRepair_Part2(arr))
 }
 
 func day19() {
@@ -67,7 +68,7 @@ func day19() {
 	msgCtx.TopDownMatchTraversal("gandung", 0)
 }
 
-func day25_part1() {
+func day25() {
 	f, err := os.Open("./input/day25.txt")
 
 	if err != nil {
@@ -89,7 +90,7 @@ func day25_part1() {
 }
 
 func main() {
-	day1_part1()
+	day1()
 	day19()
-	day25_part1()
+	day25()
 }
