@@ -42,6 +42,32 @@ func day1() {
 	fmt.Printf("[Day 1, Part 2] multiplied (3 entries): %v\n", aoc2020.ReportRepair_Part2(arr))
 }
 
+func day2() {
+	f, err := os.Open("./input/day2.txt")
+
+	if err != nil {
+		fmt.Errorf("[Error] %s\n", err)
+		return
+	}
+
+	defer f.Close()
+
+	arr := make([]string, 0)
+	reader := bufio.NewReader(f)
+
+	for {
+		lbuf, _, err := reader.ReadLine()
+
+		if err != nil && len(lbuf) == 0 {
+			break
+		}
+
+		arr = append(arr, string(lbuf))
+	}
+
+	fmt.Printf("[Day 2, Part 1] password matches: %v\n", aoc2020.PasswordPhilosophy(arr))
+}
+
 func day19() {
 	f, err := os.Open("./input/day19.txt")
 
@@ -91,6 +117,7 @@ func day25() {
 
 func main() {
 	day1()
+	day2()
 	day19()
 	day25()
 }
